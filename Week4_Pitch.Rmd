@@ -1,0 +1,102 @@
+---
+title: "Week4 : Reproducible Pitch Presentation"
+author: <b> "Swetha Thagella" </b>
+date: "June 12, 2018"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Objective
+
+The purpose of the app developed for this week's project is to calculate the Contribution Margin for a typical Retail Widget/Unit/Item of any kind given the costs incurred.
+
+<div class = "black">
+<u>
+<b>
+Contribution Margin Definition:
+</u>
+</b>
+</div>
+
+
+##### Contribution margin (CM), or dollar contribution per unit, is the selling price per unit minus the variable cost per unit. "Contribution" represents the portion of sales revenue that is not consumed by variable costs and so contributes to the coverage of fixed costs. <u> <b> This concept is one of the key building blocks of break-even analysis.</u> </b> - From Wikipedia
+
+
+## How to use the App
+
+- Slide the cost of goods bar to set the cost. For instance, this is something you would typically get from a seller.
+- Slide the variable costs bar based on your knowledge of what variable costs are incurred. For example : This could be the labor cost involved in handling the widget or many other such costs.
+- Slide the retail bar to see what it needs to set to breakeven given the costs or increase it depending on much how contribution you want to make.
+- You can play around with all three options depending on your goal and see the impact on contribution margin. This is a handy tool for buying negotiations as well as for break even analysis.
+
+- link to app (https://sthagella.shinyapps.io/Week4_ProjApp/)
+
+## Code for ui.R (just a snapshot as all won't fit on the slide)
+
+```{r, eval = FALSE, echo = TRUE}
+
+  # Application title
+  titlePanel("Contribution Margin Calculator for a Retail Widget"),
+  
+  # Sidebar with a slider input for costs and retail information
+  sidebarLayout(
+    sidebarPanel(
+       sliderInput("binsr",
+                   "Retail per Unit",
+                   min = 0.5,
+                   max = 50,
+                   value = 100)
+    ,
+    
+      sliderInput("binsc",
+                  "Cost of Goods per Unit",
+                  min = -50,
+                  max = -0.5,
+                  value = 100)
+    
+    ,
+    
+    sliderInput("binsd",
+                "Variable Cost per Unit",
+                min = -50,
+                max = -0.5,
+                value = 100)
+    ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+       h3("Output : Contribution Margin"),
+           textOutput("contribm"),
+       h4("A positive contribution margin indicates profitability"),
+       
+       h3("Documentation"),
+       h5("The calculator helps with determining the profitability of a retail item. You can set the retail for a given cost of goods and other variable costs so that the margin is profitable. Note that costs are negative and retail is postive.")
+    ))
+  )
+)
+  
+```
+
+## Code for server.R
+
+```{r, eval = FALSE, echo = TRUE}
+
+library(shiny)
+
+# Generate Contribution Margin based on input costs from ui.R
+shinyServer(function(input, output) {
+   
+  output$contribm <- renderText(input$binsr + input$binsc + input$binsd)
+  
+})
+
+```
+
+
+
+
